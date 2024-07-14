@@ -1,4 +1,10 @@
+import { useSelector, useDispatch } from "react-redux";
+import { fetchTeam } from "../store/slices/teamSlice";
+
 export default function Catalog() {
+  const { team } = useSelector((state) => state.team);
+  const dispatch = useDispatch();
+
   return (
     <>
       <header className="bg-[#512689] text-white text-center flex flex-col items-center">
@@ -10,8 +16,18 @@ export default function Catalog() {
           сложных ситуаций.
         </p>
       </header>
-      <div>Человечки</div>
-      <button>Показать ещё</button>
+      <div>
+        {team &&
+          team.map((t) => (
+            <div key={t.id}>
+              <img src={t.avatar} alt="" className="rounded-full" />
+              <p>
+                {t.first_name} {t.last_name}
+              </p>
+            </div>
+          ))}
+      </div>
+      <button onClick={() => dispatch(fetchTeam())}>Показать ещё</button>
     </>
   );
 }
