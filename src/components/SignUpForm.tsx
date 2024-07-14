@@ -7,7 +7,7 @@ export default function SignUpForm() {
         "shadow-xl w-[90%] sm:w-[70%] md:w-[50%] lg:w-[35%] xl:w-[25%]",
         "flex flex-col gap-4 p-4 rounded-md",
         "[&>div>input]:bg-[#F8F8F8] [&>div>input]:px-4 [&>div>input]:py-2",
-        "[&>div]:flex [&>div]:flex-col [&>div]:gap-2"
+        "[&>div]:flex [&>div]:flex-col [&>div]:gap-4"
       )}
     >
       <h3 className="text-lg font-bold">Регистрация</h3>
