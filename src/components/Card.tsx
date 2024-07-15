@@ -1,9 +1,19 @@
 import type { TeamMember } from "../types";
 import { cn } from "../utilis";
+import { useDispatch } from "react-redux";
+import { toggleLike } from "../store/slices/teamSlice";
 
 type CardProps = TeamMember;
 
-export default function Card({ first_name, last_name, avatar }: CardProps) {
+export default function Card({
+  first_name,
+  last_name,
+  avatar,
+  isLiked,
+  id,
+}: CardProps) {
+  const dispath = useDispatch();
+
   return (
     <div
       className={cn(
@@ -12,14 +22,19 @@ export default function Card({ first_name, last_name, avatar }: CardProps) {
         "border-2 border-gray-200 hover:border-gray-700 transition-all"
       )}
     >
-      <img src={avatar} alt="Аватарка персонажа" className="rounded-full" />
+      <img
+        src={avatar}
+        alt="Аватарка персонажа"
+        className="rounded-full size-36 object-cover"
+      />
       <p>
         {first_name} {last_name}
       </p>
       <div
+        onClick={() => dispath(toggleLike(id))}
         className={cn(
-          "self-end p-2 bg-gray-200 rounded-md cursor-pointer",
-          "[&>*]:fill-purple-900"
+          "self-end p-2 bg-gray-200 rounded-md cursor-pointer hover:scale-110 transition-all",
+          isLiked && "[&>*]:fill-purple-900"
         )}
       >
         {like}
@@ -39,8 +54,8 @@ const like = (
     <path
       d="M4.85 1C2.72375 1 1 2.72173 1 4.84548C1 8.69096 5.55 12.1869 8 13C10.45 12.1869 15 8.69096 15 4.84548C15 2.72173 13.2762 1 11.15 1C9.848 1 8.6965 1.64569 8 2.63398C7.64499 2.1289 7.17336 1.71669 6.62504 1.43226C6.07672 1.14784 5.46785 0.999565 4.85 1Z"
       stroke="#151317"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

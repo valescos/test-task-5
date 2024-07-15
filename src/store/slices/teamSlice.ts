@@ -8,8 +8,24 @@ export const teamSlice = createSlice({
   },
   reducers: {
     setTeam(state, action) {
-      console.log(action);
-      state.team = action.payload.data;
+      state.team = action.payload.data.map((i) => {
+        return {
+          ...i,
+          isLiked: false,
+        };
+      });
+    },
+    toggleLike(state, action) {
+      state.team = state.team.map((i) => {
+        if (i.id === action.payload) {
+          return {
+            ...i,
+            isLiked: !i.isLiked,
+          };
+        } else {
+          return i;
+        }
+      });
     },
   },
 });
@@ -19,7 +35,7 @@ export const fetchTeam: AsyncThunk<undefined, void, AsyncThunkConfig> =
     "team/fetchTeam",
     async function (_, { rejectWithValue, dispatch }) {
       try {
-        const response = await fetch("https://reqres.in/api/users?per_page=4");
+        const response = await fetch("https://reqres.in/api/users?per_page=12");
         if (response.ok) {
           const data = await response.json();
           dispatch(setTeam(data));
@@ -30,6 +46,6 @@ export const fetchTeam: AsyncThunk<undefined, void, AsyncThunkConfig> =
     }
   );
 
-export const { setTeam } = teamSlice.actions;
+export const { setTeam, toggleLike } = teamSlice.actions;
 
 export default teamSlice.reducer;
