@@ -2,6 +2,7 @@ import type { TeamMember } from "../types";
 import { cn } from "../utilis";
 import { useDispatch } from "react-redux";
 import { toggleLike } from "../store/slices/teamSlice";
+import { useNavigate } from "react-router-dom";
 
 type CardProps = TeamMember;
 
@@ -13,6 +14,7 @@ export default function Card({
   id,
 }: CardProps) {
   const dispath = useDispatch();
+  const navigate = useNavigate();
 
   return (
     <div
@@ -23,9 +25,10 @@ export default function Card({
       )}
     >
       <img
+        onClick={() => navigate(`/${id}`)}
         src={avatar}
         alt="Аватарка персонажа"
-        className="rounded-full size-36 object-cover"
+        className="rounded-full size-36 object-cover cursor-pointer hover:scale-105 transition-all"
       />
       <p>
         {first_name} {last_name}
