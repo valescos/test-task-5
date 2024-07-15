@@ -19,7 +19,7 @@ export const fetchTeam: AsyncThunk<undefined, void, AsyncThunkConfig> =
     "team/fetchTeam",
     async function (_, { rejectWithValue, dispatch }) {
       try {
-        const response = await fetch("https://reqres.in/api/users?per_page=12");
+        const response = await fetch("https://reqres.in/api/users?per_page=4");
         if (response.ok) {
           const data = await response.json();
           dispatch(setTeam(data));
