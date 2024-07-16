@@ -1,18 +1,25 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import type { TeamMember } from "../types";
 import { cn } from "../utilis";
-import { useAppSelector } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { useCookies } from "react-cookie";
+import { deleteToken } from "../store/slices/formSlice";
 
 export default function ProfileDetails() {
   const { team } = useAppSelector((state) => state.team);
+  const dispatch = useAppDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const cookie = true;
+  const [cookies, _, removeCookie] = useCookies(["token"]);
 
   const targetUser = team.find((t: TeamMember) => t.id === Number(id));
 
-  if (!cookie) {
+  function handleExit() {
+    removeCookie("token");
+    dispatch(deleteToken());
+  }
+
+  if (!cookies.token) {
     return <Navigate to="/signup" />;
   }
 
@@ -40,6 +47,7 @@ export default function ProfileDetails() {
               Назад
             </button>
             <button
+              onClick={() => handleExit()}
               className={cn(
                 "border-[1px] border-white px-4 py-1 rounded-md",
                 "absolute right-0 translate-x-[200%]"

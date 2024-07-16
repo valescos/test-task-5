@@ -1,4 +1,10 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  AsyncThunk,
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import type { RootState, AppDispatch } from "../store";
 
 export const formSlice = createSlice({
   name: "form",
@@ -7,6 +13,7 @@ export const formSlice = createSlice({
     email: "",
     password: "",
     confirm_password: "",
+    token: null as string | null,
     errors: {
       name: false,
       email: false,
@@ -15,6 +22,18 @@ export const formSlice = createSlice({
     },
   },
   reducers: {
+    resetFields(state) {
+      state.name = "";
+      state.email = "";
+      state.password = "";
+      state.confirm_password = "";
+    },
+    setToken(state, action: PayloadAction<string>) {
+      state.token = action.payload;
+    },
+    deleteToken(state) {
+      state.token = null;
+    },
     setName(state, action: PayloadAction<string>) {
       state.name = action.payload;
     },
@@ -55,11 +74,52 @@ export const formSlice = createSlice({
   },
 });
 
+type AsyncThunkConfig = {
+  state?: RootState;
+  dispatch?: AppDispatch;
+  rejectValue?: string;
+};
+
+export const getAuthToken: AsyncThunk<undefined, void, AsyncThunkConfig> =
+  createAsyncThunk(
+    "form/getAuthToken",
+    async function (_, { rejectWithValue, dispatch, getState }) {
+      try {
+        const { form } = getState() as RootState;
+
+        if (Object.values(form.errors).some((v) => v === true)) return;
+
+        const response = await fetch("https://reqres.in/api/register", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "eve.holt@reqres.in",
+            password: "pistol",
+          }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          dispatch(setToken(data.token));
+          dispatch(resetFields());
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          return rejectWithValue(error.message);
+        }
+      }
+    }
+  );
+
 export const {
   setName,
   setEmail,
   setPassword,
   setConfirmPassword,
   validateForm,
+  setToken,
+  deleteToken,
+  resetFields,
 } = formSlice.actions;
 export default formSlice.reducer;

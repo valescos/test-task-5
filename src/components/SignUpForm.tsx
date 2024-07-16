@@ -1,4 +1,5 @@
 import {
+  getAuthToken,
   setConfirmPassword,
   setEmail,
   setName,
@@ -17,6 +18,7 @@ export default function SignUpForm() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     dispatch(validateForm());
+    dispatch(getAuthToken());
   }
 
   return (

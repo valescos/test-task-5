@@ -1,10 +1,18 @@
 import { Navigate } from "react-router-dom";
 import SignUpForm from "../components/SignUpForm";
+import { useCookies } from "react-cookie";
+import { useAppSelector } from "../store/store";
+import { useEffect } from "react";
 
 export default function SignUpLogIn() {
-  const cookie = false;
+  const { token } = useAppSelector((state) => state.form);
+  const [cookies, setCookie, __] = useCookies(["token"]);
 
-  if (cookie) {
+  useEffect(() => {
+    if (token) setCookie("token", token);
+  }, [token]);
+
+  if (cookies.token) {
     return <Navigate to="/" />;
   }
 

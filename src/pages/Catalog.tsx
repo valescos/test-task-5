@@ -9,12 +9,13 @@ import { useEffect } from "react";
 import type { TeamMember } from "../types";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
+import { useCookies } from "react-cookie";
+import { deleteToken } from "../store/slices/formSlice";
 
 export default function Catalog() {
   const { team, limit, current_page } = useAppSelector((state) => state.team);
   const dispatch = useAppDispatch();
-
-  const cookie = true;
+  const [cookies, _, removeCookie] = useCookies(["token"]);
 
   useEffect(() => {
     dispatch(fetchTeam());
@@ -25,6 +26,11 @@ export default function Catalog() {
     dispatch(setCurrentPage(1));
   }
 
+  function handleExit() {
+    removeCookie("token");
+    dispatch(deleteToken());
+  }
+
   function computePages(pageAmount: number): number[] {
     let result = [];
     for (let i = 0; i < pageAmount; i++) {
@@ -33,7 +39,7 @@ export default function Catalog() {
     return result;
   }
 
-  if (!cookie) {
+  if (!cookies.token) {
     return <Navigate to="/signup" />;
   }
 
@@ -47,6 +53,7 @@ export default function Catalog() {
           )}
         >
           <button
+            onClick={() => handleExit()}
             className={cn(
               "border-[1px] border-white px-4 py-1 rounded-md self-end",
               "absolute rigth-0 translate-x-[200%]"
