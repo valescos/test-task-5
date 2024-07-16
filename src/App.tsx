@@ -9,8 +9,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Catalog />} />
       <Route path="/error" element={<WrongPath />} />
-      <Route path="/:id" element={<ProfileDetails />} />
       <Route path="/signup" element={<SignUpLogIn />} />
+      <Route path="/:id" element={<ProfileDetails />} />
       <Route path="*" element={<WrongPath />} />
     </Routes>
   );
