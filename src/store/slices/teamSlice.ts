@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { AsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState, AppDispatch } from "../store";
-
 import { TeamMember } from "../../types";
 
 export const teamSlice = createSlice({
