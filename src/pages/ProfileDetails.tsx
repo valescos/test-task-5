@@ -5,7 +5,6 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { useCookies } from "react-cookie";
 import { deleteToken } from "../store/slices/formSlice";
 import { persistor } from "../store/store";
-import { fetchTeam } from "../store/slices/teamSlice";
 
 export default function ProfileDetails() {
   const { team } = useAppSelector((state) => state.team);
@@ -20,7 +19,6 @@ export default function ProfileDetails() {
     removeCookie("token");
     dispatch(deleteToken());
     persistor.flush();
-    dispatch(fetchTeam());
   }
 
   if (!cookies.token) {

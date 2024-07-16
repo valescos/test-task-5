@@ -1,8 +1,4 @@
-import {
-  fetchTeam,
-  increaseLimit,
-  setCurrentPage,
-} from "../store/slices/teamSlice";
+import { increaseLimit, setCurrentPage } from "../store/slices/teamSlice";
 import { cn } from "../utilis";
 import Card from "../components/Card";
 import type { TeamMember } from "../types";
@@ -26,7 +22,6 @@ export default function Catalog() {
     removeCookie("token");
     dispatch(deleteToken());
     persistor.flush();
-    dispatch(fetchTeam());
   }
 
   function computePages(pageAmount: number): number[] {

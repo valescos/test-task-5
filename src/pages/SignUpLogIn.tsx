@@ -1,12 +1,18 @@
 import { Navigate } from "react-router-dom";
 import SignUpForm from "../components/SignUpForm";
 import { useCookies } from "react-cookie";
-import { useAppSelector } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { useEffect } from "react";
+import { fetchTeam } from "../store/slices/teamSlice";
 
 export default function SignUpLogIn() {
   const { token } = useAppSelector((state) => state.form);
+  const dispatch = useAppDispatch();
   const [cookies, setCookie, __] = useCookies(["token"]);
+
+  useEffect(() => {
+    dispatch(fetchTeam());
+  }, []);
 
   useEffect(() => {
     if (token) setCookie("token", token);
