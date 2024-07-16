@@ -1,99 +1,109 @@
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import type { TeamMember } from "../types";
 import { cn } from "../utilis";
+import { useAppSelector } from "../store/store";
 
 export default function ProfileDetails() {
-  const { team } = useSelector((state) => state.team);
+  const { team } = useAppSelector((state) => state.team);
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const cookie = true;
+
   const targetUser = team.find((t: TeamMember) => t.id === Number(id));
 
-  return (
-    <>
-      <header
-        className={cn("bg-[#512689] text-white flex flex-col items-center")}
-      >
-        <div
-          className={cn(
-            "w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%]",
-            "py-8",
-            "flex flex-col gap-4",
-            "relative"
-          )}
+  if (!cookie) {
+    return <Navigate to="/signup" />;
+  }
+
+  if (targetUser) {
+    return (
+      <>
+        <header
+          className={cn("bg-[#512689] text-white flex flex-col items-center")}
         >
-          <button
+          <div
             className={cn(
-              "border-[1px] border-white px-4 py-1 rounded-md",
-              "absolute left-0 -translate-x-[200%]"
-            )}
-            onClick={() => navigate("/")}
-          >
-            Назад
-          </button>
-          <button
-            className={cn(
-              "border-[1px] border-white px-4 py-1 rounded-md",
-              "absolute right-0 translate-x-[200%]"
+              "w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%]",
+              "py-8",
+              "flex flex-col gap-4",
+              "relative"
             )}
           >
-            Выход
-          </button>
-          <div className="flex gap-8 items-center">
-            <img
-              src={targetUser.avatar}
-              alt=""
-              className="rounded-full size-48 object-cover"
-            />
-            <div className="flex flex-col gap-2">
-              <h2 className="text-6xl">
-                {targetUser.first_name} {targetUser.last_name}
-              </h2>
-              <p className="text-3xl font-light">Партнер</p>
+            <button
+              className={cn(
+                "border-[1px] border-white px-4 py-1 rounded-md",
+                "absolute left-0 -translate-x-[200%]"
+              )}
+              onClick={() => navigate("/")}
+            >
+              Назад
+            </button>
+            <button
+              className={cn(
+                "border-[1px] border-white px-4 py-1 rounded-md",
+                "absolute right-0 translate-x-[200%]"
+              )}
+            >
+              Выход
+            </button>
+            <div className="flex gap-8 items-center">
+              <img
+                src={targetUser.avatar}
+                alt=""
+                className="rounded-full size-48 object-cover"
+              />
+              <div className="flex flex-col gap-2">
+                <h2 className="text-6xl">
+                  {targetUser.first_name} {targetUser.last_name}
+                </h2>
+                <p className="text-3xl font-light">Партнер</p>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
-      <div className="flex flex-col items-center py-8">
-        <div
-          className={cn(
-            "w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%]",
-            "flex gap-2"
-          )}
-        >
-          <div className="order-2 min-w-[16rem]">
-            <p className="flex gap-2 items-center justify-end pb-2">
-              {phone} +7 (999) 666-99-66
-            </p>
-            <p className="flex gap-2 items-center justify-end">
-              {mail} {targetUser.email}
+        </header>
+        <div className="flex flex-col items-center py-8">
+          <div
+            className={cn(
+              "w-[90%] sm:w-[80%] md:w-[70%] lg:w-[60%] xl:w-[50%]",
+              "flex gap-2"
+            )}
+          >
+            <div className="order-2 min-w-[16rem]">
+              <p className="flex gap-2 items-center justify-end pb-2">
+                {phone} +7 (999) 666-99-66
+              </p>
+              <p className="flex gap-2 items-center justify-end">
+                {mail} {targetUser.email}
+              </p>
+            </div>
+            <p className="order-1">
+              Клиенты видят в нем эксперта по вопросам разработки комплексных
+              решений финансовых продуктов, включая такие аспекты, как
+              организационная структура, процессы, аналитика и ИТ-компоненты. Он
+              помогает клиентам лучше понимать структуру рисков их бизнеса,
+              улучшать процессы за счет применения новейших технологий и
+              увеличивать продажи, используя самые современные аналитические
+              инструменты. В работе с клиентами недостаточно просто решить
+              конкретную проблему или помочь справиться с трудностями. Не менее
+              важно уделять внимание обмену знаниями: "Один из самых позитивных
+              моментов — это осознание того, что ты помог клиенту перейти на
+              совершенно новый уровень компетентности, уверенность в том, что
+              после окончания проекта у клиента есть все необходимое, чтобы
+              дальше развиваться самостоятельно". Помимо разнообразных проектов
+              для клиентов финансового сектора, Сорин ведет активную
+              предпринимательскую деятельность. Он является совладельцем сети
+              клиник эстетической медицины в Швейцарии, предлагающей
+              инновационный подход к красоте, а также инвестором других
+              бизнес-проектов.
             </p>
           </div>
-          <p className="order-1">
-            Клиенты видят в нем эксперта по вопросам разработки комплексных
-            решений финансовых продуктов, включая такие аспекты, как
-            организационная структура, процессы, аналитика и ИТ-компоненты. Он
-            помогает клиентам лучше понимать структуру рисков их бизнеса,
-            улучшать процессы за счет применения новейших технологий и
-            увеличивать продажи, используя самые современные аналитические
-            инструменты. В работе с клиентами недостаточно просто решить
-            конкретную проблему или помочь справиться с трудностями. Не менее
-            важно уделять внимание обмену знаниями: "Один из самых позитивных
-            моментов — это осознание того, что ты помог клиенту перейти на
-            совершенно новый уровень компетентности, уверенность в том, что
-            после окончания проекта у клиента есть все необходимое, чтобы дальше
-            развиваться самостоятельно". Помимо разнообразных проектов для
-            клиентов финансового сектора, Сорин ведет активную
-            предпринимательскую деятельность. Он является совладельцем сети
-            клиник эстетической медицины в Швейцарии, предлагающей инновационный
-            подход к красоте, а также инвестором других бизнес-проектов.
-          </p>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
+
+  return <>Нет Юзверья!</>;
 }
 
 const phone = (
