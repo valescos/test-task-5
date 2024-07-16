@@ -17,7 +17,7 @@ export default function SignUpLogIn() {
   }
 
   return (
-    <div className="flex h-[100vh] flex-col items-center justify-center">
+    <div className="flex h-[100vh] flex-col mt-8 lg:mt-0 items-center lg:justify-center">
       <SignUpForm />
     </div>
   );
