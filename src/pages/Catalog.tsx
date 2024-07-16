@@ -5,21 +5,17 @@ import {
 } from "../store/slices/teamSlice";
 import { cn } from "../utilis";
 import Card from "../components/Card";
-import { useEffect } from "react";
 import type { TeamMember } from "../types";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { useCookies } from "react-cookie";
 import { deleteToken } from "../store/slices/formSlice";
+import { persistor } from "../store/store";
 
 export default function Catalog() {
   const { team, limit, current_page } = useAppSelector((state) => state.team);
   const dispatch = useAppDispatch();
   const [cookies, _, removeCookie] = useCookies(["token"]);
-
-  useEffect(() => {
-    dispatch(fetchTeam());
-  }, []);
 
   function handleShowMore() {
     dispatch(increaseLimit(4));
@@ -29,6 +25,8 @@ export default function Catalog() {
   function handleExit() {
     removeCookie("token");
     dispatch(deleteToken());
+    persistor.flush();
+    dispatch(fetchTeam());
   }
 
   function computePages(pageAmount: number): number[] {

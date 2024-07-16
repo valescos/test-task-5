@@ -64,6 +64,8 @@ export const fetchTeam: AsyncThunk<undefined, void, AsyncThunkConfig> =
     }
   );
 
+fetchTeam();
+
 export const { setTeam, toggleLike, increaseLimit, setCurrentPage } =
   teamSlice.actions;
 
