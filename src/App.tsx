@@ -2,14 +2,16 @@ import { Routes, Route } from "react-router-dom";
 import Catalog from "./pages/Catalog";
 import ProfileDetails from "./pages/ProfileDetails";
 import SignUpLogIn from "./pages/SignUpLogIn";
+import WrongPath from "./pages/WrongPath";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Catalog />} />
+      <Route path="/error" element={<WrongPath />} />
       <Route path="/:id" element={<ProfileDetails />} />
       <Route path="/signup" element={<SignUpLogIn />} />
-      <Route path="*" element={<div>БУМ</div>} />
+      <Route path="*" element={<WrongPath />} />
     </Routes>
   );
 }

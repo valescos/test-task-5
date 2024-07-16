@@ -111,7 +111,7 @@ export default function ProfileDetails() {
     );
   }
 
-  return <>Нет Юзверья!</>;
+  return <Navigate to="/error" />;
 }
 
 const phone = (
