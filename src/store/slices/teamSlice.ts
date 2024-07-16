@@ -8,8 +8,16 @@ export const teamSlice = createSlice({
   name: "team",
   initialState: {
     team: [] as TeamMember[],
+    limit: 4,
+    current_page: 1,
   },
   reducers: {
+    increaseLimit(state, action: PayloadAction<number>) {
+      state.limit += action.payload;
+    },
+    setCurrentPage(state, action: PayloadAction<number>) {
+      state.current_page = action.payload;
+    },
     setTeam(state, action: PayloadAction<{ data: TeamMember[] }>) {
       state.team = action.payload.data.map((i) => {
         return {
@@ -57,6 +65,7 @@ export const fetchTeam: AsyncThunk<undefined, void, AsyncThunkConfig> =
     }
   );
 
-export const { setTeam, toggleLike } = teamSlice.actions;
+export const { setTeam, toggleLike, increaseLimit, setCurrentPage } =
+  teamSlice.actions;
 
 export default teamSlice.reducer;

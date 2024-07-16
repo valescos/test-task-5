@@ -1,16 +1,18 @@
-import { fetchTeam } from "../store/slices/teamSlice";
+import {
+  fetchTeam,
+  increaseLimit,
+  setCurrentPage,
+} from "../store/slices/teamSlice";
 import { cn } from "../utilis";
 import Card from "../components/Card";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { TeamMember } from "../types";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 
 export default function Catalog() {
-  const { team } = useAppSelector((state) => state.team);
+  const { team, limit, current_page } = useAppSelector((state) => state.team);
   const dispatch = useAppDispatch();
-  const [limit, setLimit] = useState(4);
-  const [pages, setPages] = useState(1);
 
   const cookie = true;
 
@@ -19,8 +21,8 @@ export default function Catalog() {
   }, []);
 
   function handleShowMore() {
-    setLimit(limit + 4);
-    setPages(1);
+    dispatch(increaseLimit(4));
+    dispatch(setCurrentPage(1));
   }
 
   function computePages(pageAmount: number): number[] {
@@ -71,17 +73,19 @@ export default function Catalog() {
             team
               .filter(
                 (t: TeamMember, index: number) =>
-                  index >= (pages - 1) * limit && index < limit * pages && t
+                  index >= (current_page - 1) * limit &&
+                  index < limit * current_page &&
+                  t
               )
               .map((t) => <Card key={t.id} {...t} />)}
         </div>
         <div className="flex justify-center gap-4">
           {computePages(Math.ceil(team.length / limit)).map((i) => (
             <span
-              onClick={() => setPages(i)}
+              onClick={() => dispatch(setCurrentPage(i))}
               className={cn(
                 "text-[#512689] font-bold cursor-pointer px-2 py-1",
-                i === pages && "bg-[#512689] rounded-md text-white"
+                i === current_page && "bg-[#512689] rounded-md text-white"
               )}
               key={i}
             >
@@ -95,7 +99,8 @@ export default function Catalog() {
           className={cn(
             "border-[1px] border-black px-4 py-1 rounded-md self-center cursor-pointer",
             "disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-200",
-            "flex items-center gap-2"
+            "flex items-center gap-2",
+            "[&>*]:disabled:opacity-20"
           )}
         >
           Показать ещё {arrowdown}
