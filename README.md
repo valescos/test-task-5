@@ -1,7 +1,7 @@
 # Демонстрационный сайт с карточками пользователей
 ### _Тестовое задание при приёме на стажировку_
 
-[vsk-planner-cl.onrender.com](https://valescos-test-task-5.netlify.app)
+[valescos-test-task-5.netlify.app](https://valescos-test-task-5.netlify.app)
 
 #### Технологии:
 - React
